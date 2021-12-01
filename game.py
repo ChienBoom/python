@@ -7,9 +7,9 @@ from pygame.locals import *
 
 # 2 - Khởi tạo game
 pygame.init() #Khởi tạo tất cả các modul cho pygame
-width, height = 640, 480 #tạo biến chiều dài và chiều rộng 
+width, height = 640, 480 #tạo biến chiều rộng và chiều cao 
 screen=pygame.display.set_mode((width, height)) #Khai báo màn hình với chiều rộng vàchiều dài
-keys = [False, False, False, False]
+keys = [False, False, False, False] #danh sách khóa của các phim di chuyển
 playerpos=[100,100] #tọa độ người chơi ban đầu
 acc=[0,0] #danh sách số mũi tên bắn trùng và đã bắn
 arrows=[] #danh sách mũi tên
@@ -64,9 +64,9 @@ while running: #Trong khi chạy
         index=0
         velx=math.cos(bullet[0])*10 #trả về giá trị cos tọa độ của mũi tên
         vely=math.sin(bullet[0])*10 #trả về giá trị sin tọa độ của mũi tên
-        bullet[1]+=velx #tạo chuyển động cho mũi tên bằng cách thay đổi tọa độ
+        bullet[1]+=velx #tạo tọa độ mũi tên với hướng chuột
         bullet[2]+=vely
-        if bullet[1]<-64 or bullet[1]>640 or bullet[2]<-64 or bullet[2]>480: #xét điều kiện nếu chạm khung hình sẽ biến mất
+        if bullet[1]<64 or bullet[1]>640 or bullet[2]<64 or bullet[2]>480: #xét điều kiện nếu chạm khung hình sẽ biến mất
             arrows.pop(index)
         index+=1
         for projectile in arrows:
@@ -74,15 +74,15 @@ while running: #Trong khi chạy
             screen.blit(arrow1, (projectile[1], projectile[2])) # Chèn mũi tên sau khi thay đổi vào màn hình
     # 6.3 - Vẽ con lửng mật
     if badtimer==0:
-        badguys.append([640, random.randint(50,430)]) #Thêm một con lửng mật vào danh sách 
-        badtimer=100-(badtimer1*2)
+        badguys.append([640, random.randint(50,430)]) #Thêm một con lửng mật vào danh sách với tọa độ random
+        badtimer=100-(badtimer1*2) #thiết lập thêm lửng mật sau một thời gian nhất định
         if badtimer1>=35:
             badtimer1=35
         else:
             badtimer1+=5
     index=0
     for badguy in badguys:
-        if badguy[0]<-64: # điều kiện nếu lửng mật đi đến thành trì thì xóa bỏ
+        if badguy[0]<64: # điều kiện nếu lửng mật đi đến thành trì thì xóa bỏ
             badguys.pop(index)
         badguy[0]-=7
         # 6.3.1 - Tấn công thành trì
@@ -103,7 +103,7 @@ while running: #Trong khi chạy
             if badrect.colliderect(bullrect): #điều kiện mũi tên va chạm với lửng mật
                 enemy.play() # nhạc hoạt động
                 acc[0]+=1
-                badguys.pop(index) #xóa lửng mâth
+                badguys.pop(index) #xóa lửng mât
                 arrows.pop(index1) #xóa mũi tên
             index1+=1
         index+=1
